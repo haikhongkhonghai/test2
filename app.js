@@ -5,7 +5,7 @@ const appState = {
 };
 
 function seedIfEmpty() {
-    if (localStorage.getItem("tasks") === null) {
+    if (localStorage.getItem(Task.STORAGE_KEY) === null) {
         const demos = [
         { name: 'Task 1', status: 'NEW' },
         { name: 'Task 2', status: 'DOING' },
