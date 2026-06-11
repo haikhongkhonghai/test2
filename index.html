@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Hệ thống quản lý danh sách công việc" />
+    <title>Quản lý danh sách task</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo">
+                <i class="fa-solid fa-list-check"></i>
+                <span class="logo-text">TIS</span>
+            </div>
+        </div>
+        <div class="sidebar-nav">
+            <a href="#" class="nav-item active" id="nav-tasks">
+                <i class="fa-solid fa-table-list"></i>
+                <span>Danh sách task</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content" id="mainContent">
+        <!--Top Bar-->
+        <header class="topbar">
+            <button class="toggle-sidebar" id="toggleSidebar" title="Ẩn/Hiện sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="page-title" id="pageTitle">Quản lý danh sách task</h1>
+
+            <div class="topbar-actions">
+                <!-- Navigation -->
+                <div class="topbar-group">
+                    <button class="topbar-btn" id="btn-back" title="Quay lại">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <button class="topbar-btn" id="btn-next" title="Tiến tới">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button class="topbar-btn" id="btn-refresh" title="Làm mới">
+                        <i class="fas fa-rotate-right"></i>
+                    </button>
+                </div>
+
+                <!-- Zoom -->
+                <div class="topbar-group">
+                    <button class="topbar-btn" id="btn-zoom-out" title="Thu nhỏ">
+                        <i class="fas fa-magnifying-glass-minus"></i>
+                    </button>
+                    <span class="zoom-label" id="zoom-label">100%</span>
+                    <button class="topbar-btn" id="btn-zoom-reset" title="Reset zoom">
+                        <i class="fas fa-compress"></i>
+                    </button>
+                    <button class="topbar-btn" id="btn-zoom-in" title="Phóng to">
+                        <i class="fas fa-magnifying-glass-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!--Page: Task-->
+        <section class="page-content active" id="page-tasks">
+            <div class="filter-section">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="filter-task-name">Tên / Mã task</label>
+                        <input type="text" id="filter-task-name" placeholder="Nhập tên task hoặc mã" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-task-status">Trạng thái của task</label>
+                        <select id="filter-task-status">
+                            <option value="ALL" selected>ALL</option>
+                            <option value="NEW">NEW</option>
+                            <option value="DOING">DOING</option>
+                            <option value="TESTING">TESTING</option>
+                            <option value="DONE">DONE</option>
+                            <option value="PENDING">PENDING</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-task-description">Mô tả công việc trong task</label>
+                        <input type="text" id="filter-task-description" placeholder="Nhập mô tả" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-task-date-from">Từ ngày</label>
+                        <input type="date" id="filter-task-date-from" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-task-date-to">Đến ngày</label>
+                        <input type="date" id="filter-task-date-to" />
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn btn-search" id="btn-search-task">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                        </button>
+                        <button class="btn btn-reset" id="btn-reset-task">
+                            <i class="fas fa-times"></i> Xóa lọc
+                        </button>
+                    </div>
+                </div>
+                <div class="filter-right">
+                    <button class="btn btn-primary" id="btn-add-appointment">
+                        <i class="fas fa-plus"></i> Thêm task
+                    </button>
+                </div>
+            </div>
+
+            <!--Table-->
+            <div class="table-container">
+                <table class="data-table" id="tasks-table">
+                    <thead>
+                        <tr>
+                            <th class="col-stt">STT</th>
+                            <th class="col-status">Trạng thái</th>
+                            <th class="col-name">Tên task</th>
+                            <th class="col-id">Mã task</th>
+                            <th class="col-description">Mô tả công việc</th>
+                            <th class="col-date">Ngày khởi tạo</th>
+                            <th class="col-action">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasks-tbody">
+                        <!--render by js-->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!--Modal add task-->
+    <div class="modal" id="modal-add-task" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Thêm công việc</h2>
+                <button class="btn-close" id="btn-close-task"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-content">
+                <div class="modal-content-body">
+                    <div class="form-group">
+                        <label>Tên công việc<span class="required">*</span></label>
+                        <input type="text" class="w-100" id="modal-form-name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Trạng thái</label>
+                        <select class="w-100" id="modal-form-status">
+                            <option value="">Chọn trạng thái</option>
+                            <option value="NEW">NEW</option>
+                            <option value="DOING">DOING</option>
+                            <option value="TESTING">TESTING</option>
+                            <option value="DONE">DONE</option>
+                            <option value="PENDING">PENDING</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả công việc <span class="required">*</span></label>
+                        <input type="text" class="w-100" id="modal-form-description" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-action">
+                <button class="btn btn-reset" id="btn-cancel-patient">Hủy</button>
+                <button class="btn btn-primary" id="btn-save-patient">Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Dialog -->
+    <div class="modal" id="confirm-dialog" style="display: none;">
+        <div class="modal-content confirm-modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-exclamation-triangle" style="color:#e65100;margin-right:0.5rem"></i>Xác nhận
+                </h2>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message" style="font-size:0.9375rem;text-align:center;padding:0.5rem 0"></p>
+            </div>
+            <div class="modal-footer" style="justify-content:center">
+                <button class="btn btn-reset" id="confirm-no">Hủy bỏ</button>
+                <button class="btn btn-primary" id="confirm-yes" style="background-color:#e53935">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <!-- Scroll to top floating button -->
+    <button id="btn-scroll-top" class="btn-scroll-top" title="Lên đầu trang">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="storageManager.js"></script>
+    <script src="task.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
