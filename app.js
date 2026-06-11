@@ -5,9 +5,8 @@ const appState = {
 };
 
 function seedIfEmpty() {
-    if (StorageManager.getAll(Task.STORAGE_KEY).length > 0) return;
-
-    const demos = [
+    if (localStorage.getItem("tasks") === null) {
+        const demos = [
         { name: 'Task 1', status: 'NEW' },
         { name: 'Task 2', status: 'DOING' },
         { name: 'Task 3', status: 'TESTING' },
@@ -38,13 +37,14 @@ function seedIfEmpty() {
         { name: 'Task 28', status: 'TESTING' },
         { name: 'Task 29', status: 'DONE' },
         { name: 'Task 30', status: 'PENDING' },
-    ];
+        ];
 
-    demos.forEach(d => {
-        d.description = `Mô tả mẫu cho ${d.name}`;
-        const t = new Task(d);
-        t.save();
-    });
+        demos.forEach(d => {
+            d.description = `Mô tả mẫu cho ${d.name}`;
+            const t = new Task(d);
+            t.save();
+        });
+    }
 }
 
 // Hiển thị thông báo toast góc phải màn hình trong 3 giây
