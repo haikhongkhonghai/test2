@@ -175,6 +175,11 @@ body {
     gap: 12px;
 }
 
+.filter-right {
+    display: flex;
+    align-items: flex-end;
+}
+
 .filter-row {
     display: flex;
     flex-wrap: wrap;
@@ -222,10 +227,6 @@ body {
     align-items: flex-end;
 }
 
-.filter-right {
-    display: flex;
-    align-items: flex-end;
-}
 
 .btn {
     padding: 8px 16px;
